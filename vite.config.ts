@@ -11,10 +11,10 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'screenshotter',
+      name: 'ScreenshotCapture',
       formats: ['es'],
       fileName: format => {
-        return 'screenshotter.js';
+        return 'ScreenshotCapture.js';
       },
     },
   },

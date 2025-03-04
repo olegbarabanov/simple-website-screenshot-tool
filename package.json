@@ -12,6 +12,7 @@
     "url": "https://olegbarabanov.ru"
   },
   "main": "./dist/ScreenshotCapture.js",
+  "types": "./dist/ScreenshotCapture.d.ts",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/olegbarabanov/simple-website-screenshot-tool/issues"
