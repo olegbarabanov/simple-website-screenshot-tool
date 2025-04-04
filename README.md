@@ -11,8 +11,8 @@ To generate a single screenshot:
 ```ts
 import { ScreenshotCapture } from 'simple-website-screenshot-tool'
 
-const ScreenshotCapture = new ScreenshotCapture();
-const singleResult = await ScreenshotCapture.getScreenshot({ url: "https://example.com", width: 1920, height: 4000 });
+const capture = new ScreenshotCapture();
+const singleResult = await capture.getScreenshot({ url: "https://example.com", width: 1920, height: 4000 });
 ```
 
 To generate multiple screenshots:
