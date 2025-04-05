@@ -1,4 +1,4 @@
-# Simple Website Screenshotter
+# Simple Website Screenshot Tool
 
 A simple client-side website screenshotter that doesn't require a server.
 
