@@ -21,4 +21,5 @@ export interface ScreenshotCaptureTask {
     height: number;
     offsetHeight?: number;
     offsetWidth?: number;
+    signal?: AbortSignal;
 }

@@ -22,7 +22,6 @@
     "url": "https://github.com/olegbarabanov/simple-website-screenshot-tool.git"
   },
   "homepage": "https://github.com/olegbarabanov/simple-website-screenshot-tool",
-
   "scripts": {
     "clean": "rm -fr dist",
     "build": "npm run clean && tsc --noEmit && vite build"
@@ -30,6 +29,7 @@
   "devDependencies": {
     "@types/node": "^22.13.5",
     "@types/w3c-image-capture": "^1.0.10",
+    "scheduler-polyfill": "^1.3.0",
     "typescript": "~5.7.2",
     "vite": "^6.1.0",
     "vite-plugin-dts": "^4.5.0"

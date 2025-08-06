@@ -73,33 +73,37 @@ export class ScreenshotCapture {
         this.iframe.style.transform = `translate(${-x}px, ${-y}px)`;
     }
 
-
-    protected async sleep(ms: number) {
-        return new Promise(r => setTimeout(r, ms));
-    }
-
     protected async buildScreenshot(item: ScreenshotCaptureTask, imageCapture: ImageCapture): Promise<OffscreenCanvas> {
-        item = structuredClone(item);
-        item.url = new URL(item.url).toString(); // check url
-        item.delay ??= 0;
-        item.height ??= this.maxHeight;
-        item.offsetWidth ??= 0;
-        item.offsetHeight ??= 0;
-        await this.loadIframe(item.url, item.width, item.height);
-        await this.sleep(item.delay);
-        const offscreenCanvas = new OffscreenCanvas(item.width, item.height);
+        const url = new URL(item.url).toString(); // check url
+        const {
+            signal,
+            delay = 0,
+            width = 1920,
+            height = this.maxHeight,
+            offsetWidth = 0,
+            offsetHeight = 0,
+          } = item;
+
+        await this.loadIframe(url, width, height);
+        const offscreenCanvas = new OffscreenCanvas(width, height);
         const ctxOffscreenCanvas = offscreenCanvas.getContext("2d");
 
-        for (let y = item.offsetWidth; y <= item.height; y += this.chunkHeight) {
-            for (let x = item.offsetHeight; x < item.width; x += this.chunkWidth) {
-                this.translateIframe(x, y);
-                await this.sleep(1000 / (this.frameRate / 2));
-
-                const frame = await imageCapture.grabFrame();
-                ctxOffscreenCanvas?.drawImage(frame, x, y, this.chunkWidth, this.chunkHeight);
-                frame.close();
-            }
+        if (!('scheduler' in window)) {
+            throw new Error('Prioritized Task Scheduling API is not supported in current browser');
         }
+
+        await scheduler.postTask(async () => {
+            for (let y = offsetWidth; y <= height; y += this.chunkHeight) {
+                for (let x = offsetHeight; x < width; x += this.chunkWidth) {
+                    this.translateIframe(x, y);
+                    await scheduler.postTask(async () => {
+                        const frame = await imageCapture.grabFrame();
+                        ctxOffscreenCanvas?.drawImage(frame, x, y, this.chunkWidth, this.chunkHeight);
+                        frame.close();
+                    }, { delay: 1000 / (this.frameRate / 2), signal })
+                }
+            }
+        }, { delay, signal });
 
         return offscreenCanvas;
     }
