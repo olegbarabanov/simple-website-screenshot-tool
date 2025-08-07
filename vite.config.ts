@@ -13,7 +13,7 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'ScreenshotCapture',
       formats: ['es'],
-      fileName: 'ScreenshotCapture.js',
+      fileName: () => 'ScreenshotCapture.js',
     },
   },
   plugins: [

@@ -116,12 +116,12 @@ export class ScreenshotCapture {
       );
     }
 
-    await scheduler.postTask(
+    await window.scheduler?.postTask(
       async () => {
         for (let y = offsetWidth; y <= height; y += this.chunkHeight) {
           for (let x = offsetHeight; x < width; x += this.chunkWidth) {
             this.translateIframe(x, y);
-            await scheduler.postTask(
+            await window.scheduler?.postTask(
               async () => {
                 const frame = await imageCapture.grabFrame();
                 ctxOffscreenCanvas?.drawImage(
